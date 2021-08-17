@@ -18,7 +18,7 @@ struct ELFLoader
     using Program = TELFFormat::Program;
     using Symbole = TELFFormat::Symbole;
 
-    static Result load_program(Task *task, Stream *elf_file, Program *program_header)
+    static HjResult load_program(Task *task, Stream *elf_file, Program *program_header)
     {
         if (program_header->vaddr == 0)
         {
@@ -56,7 +56,7 @@ struct ELFLoader
         }
     }
 
-    static Result load(Task *task, Stream *elf_file)
+    static HjResult load(Task *task, Stream *elf_file)
     {
         Header elf_header;
         size_t elf_header_size = stream_read(elf_file, &elf_header, sizeof(Header));
@@ -123,14 +123,14 @@ void task_pass_handles(Task *parent_task, Task *child_task, Launchpad *launchpad
     }
 }
 
-Result task_launch(Task *parent_task, Launchpad *launchpad, int *pid)
+HjResult task_launch(Task *parent_task, Launchpad *launchpad, int *pid)
 {
     assert(parent_task == scheduler_running());
 
     *pid = -1;
 
     CLEANUP(stream_cleanup)
-    Stream *elf_file = stream_open(launchpad->executable, OPEN_READ);
+    Stream *elf_file = stream_open(launchpad->executable, HJ_OPEN_READ);
 
     if (handle_has_error(elf_file))
     {
@@ -143,9 +143,9 @@ Result task_launch(Task *parent_task, Launchpad *launchpad, int *pid)
     interrupts_release();
 
 #ifdef __x86_64__
-    Result result = ELFLoader<ELF64>::load(task, elf_file);
+    HjResult result = ELFLoader<ELF64>::load(task, elf_file);
 #else
-    Result result = ELFLoader<ELF32>::load(task, elf_file);
+    HjResult result = ELFLoader<ELF32>::load(task, elf_file);
 #endif
 
     if (result != SUCCESS)
@@ -165,12 +165,12 @@ Result task_launch(Task *parent_task, Launchpad *launchpad, int *pid)
     return SUCCESS;
 }
 
-Result task_exec(Task *task, Launchpad *launchpad)
+HjResult task_exec(Task *task, Launchpad *launchpad)
 {
     assert(task == scheduler_running());
 
     CLEANUP(stream_cleanup)
-    Stream *elf_file = stream_open(launchpad->executable, OPEN_READ);
+    Stream *elf_file = stream_open(launchpad->executable, HJ_OPEN_READ);
 
     if (handle_has_error(elf_file))
     {
@@ -181,9 +181,9 @@ Result task_exec(Task *task, Launchpad *launchpad)
     task_clear_userspace(task);
 
 #ifdef __x86_64__
-    Result result = ELFLoader<ELF64>::load(task, elf_file);
+    HjResult result = ELFLoader<ELF64>::load(task, elf_file);
 #else
-    Result result = ELFLoader<ELF32>::load(task, elf_file);
+    HjResult result = ELFLoader<ELF32>::load(task, elf_file);
 #endif
 
     if (result != SUCCESS)

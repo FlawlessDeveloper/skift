@@ -1,8 +1,8 @@
+#include <abi/Result.h>
 #include <string.h>
 
 #include <libjson/Json.h>
 #include <libmath/MinMax.h>
-#include <libsystem/Result.h>
 
 #include "procfs/ProcessInfo.h"
 #include "system/interrupts/Interupts.h"
@@ -10,7 +10,7 @@
 #include "system/scheduling/Scheduler.h"
 #include "system/tasking/Task-Memory.h"
 
-FsProcessInfo::FsProcessInfo() : FsNode(FILE_TYPE_DEVICE)
+FsProcessInfo::FsProcessInfo() : FsNode(HJ_FILE_TYPE_DEVICE)
 {
 }
 
@@ -35,7 +35,7 @@ static Iteration serialize_task(Json::Value::Array *list, Task *task)
     return Iteration::CONTINUE;
 }
 
-Result FsProcessInfo::open(FsHandle &handle)
+HjResult FsProcessInfo::open(FsHandle &handle)
 {
     Json::Value::Array list{};
 

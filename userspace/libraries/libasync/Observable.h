@@ -1,6 +1,6 @@
 #pragma once
 
-#include <libutils/Callback.h>
+#include <libutils/Func.h>
 #include <libutils/OwnPtr.h>
 #include <libutils/Vector.h>
 
@@ -14,12 +14,12 @@ public:
     struct _Observer
     {
         Observable<T> *_observable;
-        Callback<void(T &)> _callback;
+        Func<void(T &)> _callback;
 
         NONCOPYABLE(_Observer);
         NONMOVABLE(_Observer);
 
-        _Observer(Observable<T> *observable, Callback<void(T &)> callback)
+        _Observer(Observable<T> *observable, Func<void(T &)> callback)
             : _observable(observable),
               _callback(callback)
         {
@@ -29,17 +29,23 @@ public:
         ~_Observer()
         {
             if (_observable)
+            {
                 _observable->unregister_observer(this);
+            }
         }
 
         void detach()
         {
             _observable = nullptr;
+            _callback = nullptr;
         }
 
         void notify(T &subject)
         {
-            _callback(subject);
+            if (_callback)
+            {
+                _callback(subject);
+            }
         }
     };
 
@@ -85,7 +91,7 @@ public:
         }
     }
 
-    OwnPtr<_Observer> observe(Callback<void(T &)> callback)
+    OwnPtr<_Observer> observe(Func<void(T &)> callback)
     {
         return own<_Observer>(this, callback);
     }

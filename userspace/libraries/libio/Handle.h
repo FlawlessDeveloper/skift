@@ -13,7 +13,7 @@ struct Handle :
 {
 private:
     int _handle = HANDLE_INVALID_ID;
-    Result _result = ERR_BAD_HANDLE;
+    HjResult _result = ERR_BAD_HANDLE;
 
     NONCOPYABLE(Handle);
 
@@ -24,7 +24,7 @@ public:
     {
     }
 
-    Handle(const String path, OpenFlag flags)
+    Handle(const String path, HjOpenFlag flags)
     {
         auto resolved_path = process_resolve(path);
         _result = hj_handle_open(&_handle, resolved_path.cstring(), resolved_path.length(), flags);
@@ -67,7 +67,7 @@ public:
         return data_written;
     }
 
-    Result call(IOCall request, void *args)
+    HjResult call(IOCall request, void *args)
     {
         _result = hj_handle_call(_handle, request, args);
         return _result;
@@ -88,9 +88,9 @@ public:
         return result_offset;
     }
 
-    ResultOr<FileState> stat()
+    ResultOr<HjStat> stat()
     {
-        FileState stat{};
+        HjStat stat{};
         _result = TRY(hj_handle_stat(_handle, &stat));
         return stat;
     }
@@ -107,7 +107,7 @@ public:
         return _handle != HANDLE_INVALID_ID;
     }
 
-    Result result()
+    HjResult result()
     {
         return _result;
     }

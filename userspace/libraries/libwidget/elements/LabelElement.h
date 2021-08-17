@@ -15,32 +15,13 @@ struct LabelState
 struct LabelElement :
     public StatefulElement<LabelState>
 {
-    void text(String text)
-    {
-        auto s = state();
-        s.text = text;
-        state(s);
-    }
-
-    void anchor(Math::Anchor anchor)
-    {
-        auto s = state();
-        s.anchor = anchor;
-        state(s);
-    }
-
-    LabelElement(String text);
-
-    LabelElement(String text, Math::Anchor anchor);
+    LabelElement(String text, Math::Anchor anchor = Math::Anchor::LEFT);
 
     void paint(Graphic::Painter &, const Math::Recti &) override;
 
     Math::Vec2i size() override;
 };
 
-static inline RefPtr<LabelElement> label(String text, Math::Anchor anchor = Math::Anchor::LEFT)
-{
-    return make<LabelElement>(text, anchor);
-}
+WIDGET_BUILDER(LabelElement, label);
 
 } // namespace Widget

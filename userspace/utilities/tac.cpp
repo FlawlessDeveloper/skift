@@ -7,7 +7,7 @@
 static bool before = false;
 static String separator;
 
-Result tac(IO::Reader &reader)
+HjResult tac(IO::Reader &reader)
 {
     if (separator.empty())
     {
@@ -70,7 +70,7 @@ int main(int argc, char const *argv[])
         return parse_result == Shell::ArgParseResult::SHOULD_FINISH ? PROCESS_SUCCESS : PROCESS_FAILURE;
     }
 
-    Result result;
+    HjResult result;
 
     if (args.argc() == 0)
     {
@@ -85,9 +85,9 @@ int main(int argc, char const *argv[])
     int process_result = PROCESS_SUCCESS;
     for (auto filepath : args.argv())
     {
-        IO::File file(filepath, OPEN_READ);
+        IO::File file(filepath, HJ_OPEN_READ);
 
-        if (file.result() != Result::SUCCESS)
+        if (file.result() != HjResult::SUCCESS)
         {
             IO::errln("{}: {}: {}", argv[0], filepath, get_result_description(file.result()));
             process_result = PROCESS_FAILURE;

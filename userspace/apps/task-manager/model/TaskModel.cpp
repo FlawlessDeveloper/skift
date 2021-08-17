@@ -92,7 +92,7 @@ Widget::Variant TaskModel::data(int row, int column)
 
 void TaskModel::update()
 {
-    IO::File file{"/System/processes", OPEN_READ};
+    IO::File file{"/System/processes", HJ_OPEN_READ};
 
     if (!file.exist())
     {
@@ -151,7 +151,7 @@ String TaskModel::cpu_greedy()
     }
 }
 
-Result TaskModel::kill_task(int row)
+HjResult TaskModel::kill_task(int row)
 {
     return process_cancel(data(row, COLUMN_ID).as_int());
 }

@@ -11,7 +11,7 @@ private:
 
 public:
     FsDevice(RefPtr<Device> device)
-        : FsNode(FILE_TYPE_DEVICE),
+        : FsNode(HJ_FILE_TYPE_DEVICE),
           _device(device)
     {
     }
@@ -45,7 +45,7 @@ public:
         return _device->write(handle.offset(), buffer, size);
     }
 
-    Result call(FsHandle &, IOCall request, void *args) override
+    HjResult call(FsHandle &, IOCall request, void *args) override
     {
         return _device->call(request, args);
     }

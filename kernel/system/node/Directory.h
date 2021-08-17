@@ -7,10 +7,10 @@
 struct FileListing
 {
     size_t count;
-    DirectoryEntry entries[];
+    HjDirEntry entries[];
 };
 
-struct FsDirectoryEntry
+struct FsHjDirEntry
 {
     String name;
     RefPtr<FsNode> node;
@@ -19,12 +19,12 @@ struct FsDirectoryEntry
 struct FsDirectory : public FsNode
 {
 private:
-    Vector<FsDirectoryEntry> _children{};
+    Vector<FsHjDirEntry> _children{};
 
 public:
     FsDirectory();
 
-    Result open(FsHandle &handle) override;
+    HjResult open(FsHandle &handle) override;
 
     void close(FsHandle &handle) override;
 
@@ -32,7 +32,7 @@ public:
 
     RefPtr<FsNode> find(String name) override;
 
-    Result link(String name, RefPtr<FsNode> child) override;
+    HjResult link(String name, RefPtr<FsNode> child) override;
 
-    Result unlink(String name) override;
+    HjResult unlink(String name) override;
 };

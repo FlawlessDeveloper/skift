@@ -3,7 +3,7 @@
 #include <libasync/Notifier.h>
 #include <libio/Connection.h>
 #include <libio/Socket.h>
-#include <libutils/Callback.h>
+#include <libutils/Func.h>
 #include <libutils/ResultOr.h>
 
 namespace IPC
@@ -42,7 +42,7 @@ public:
         close();
     }
 
-    Result send(const MessageType &message)
+    HjResult send(const MessageType &message)
     {
         auto result = Protocol::encode_message(_connection, message);
 

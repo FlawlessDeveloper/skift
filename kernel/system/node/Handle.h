@@ -10,7 +10,7 @@ struct FsHandle : public RefCounted<FsHandle>
 private:
     Lock _lock{"fshandle"};
     RefPtr<FsNode> _node = nullptr;
-    OpenFlag _flags = 0;
+    HjOpenFlag _flags = 0;
     size_t _offset = 0;
 
 public:
@@ -23,9 +23,9 @@ public:
 
     auto flags() { return _flags; }
 
-    bool has_flag(OpenFlag flag) { return (_flags & flag) == flag; }
+    bool has_flag(HjOpenFlag flag) { return (_flags & flag) == flag; }
 
-    FsHandle(RefPtr<FsNode> node, OpenFlag flags);
+    FsHandle(RefPtr<FsNode> node, HjOpenFlag flags);
 
     FsHandle(FsHandle &other);
 
@@ -45,9 +45,9 @@ public:
 
     ResultOr<ssize64_t> seek(IO::SeekFrom from);
 
-    Result call(IOCall request, void *args);
+    HjResult call(IOCall request, void *args);
 
-    Result stat(FileState *stat);
+    HjResult stat(HjStat *stat);
 
     ResultOr<RefPtr<FsHandle>> accept();
 };

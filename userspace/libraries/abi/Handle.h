@@ -2,7 +2,7 @@
 
 #include <abi/Filesystem.h>
 
-#include <libsystem/Result.h>
+#include <abi/Result.h>
 
 #define POLL_READ (1 << 0)
 #define POLL_WRITE (1 << 1)
@@ -14,8 +14,8 @@ typedef unsigned int PollEvent;
 struct Handle
 {
     int id;
-    OpenFlag flags;
-    Result result;
+    HjOpenFlag flags;
+    HjResult result;
 };
 
 struct HandlePoll
@@ -34,7 +34,3 @@ struct HandlePoll
 #define handle_error_string(__handle) result_to_string(HANDLE(__handle)->result)
 
 #define handle_get_error(__handle) (HANDLE(__handle)->result)
-
-#define handle_clear_error(__handle) (HANDLE(__handle)->result = SUCCESS)
-
-#define handle_has_flags(__handle, __flags) ((HANDLE(__handle)->flags & (__flags)) == (__flags))

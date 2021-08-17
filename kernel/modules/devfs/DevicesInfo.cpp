@@ -1,8 +1,7 @@
-#include <string.h>
-
+#include <abi/Result.h>
 #include <libjson/Json.h>
 #include <libmath/MinMax.h>
-#include <libsystem/Result.h>
+#include <string.h>
 
 #include "devfs/DevicesInfo.h"
 #include "system/devices/Devices.h"
@@ -10,11 +9,11 @@
 #include "system/node/Handle.h"
 #include "system/scheduling/Scheduler.h"
 
-FsDeviceInfo::FsDeviceInfo() : FsNode(FILE_TYPE_DEVICE)
+FsDeviceInfo::FsDeviceInfo() : FsNode(HJ_FILE_TYPE_DEVICE)
 {
 }
 
-Result FsDeviceInfo::open(FsHandle &handle)
+HjResult FsDeviceInfo::open(FsHandle &handle)
 {
     Json::Value::Array root{};
 

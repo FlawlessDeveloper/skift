@@ -1,17 +1,17 @@
 #include <string.h>
 
-#include <libsystem/Result.h>
+#include <abi/Result.h>
 
 #include "system/node/Directory.h"
 #include "system/node/Handle.h"
 
-FsDirectory::FsDirectory() : FsNode(FILE_TYPE_DIRECTORY)
+FsDirectory::FsDirectory() : FsNode(HJ_FILE_TYPE_DIRECTORY)
 {
 }
 
-Result FsDirectory::open(FsHandle &handle)
+HjResult FsDirectory::open(FsHandle &handle)
 {
-    FileListing *listing = (FileListing *)malloc(sizeof(FileListing) + sizeof(DirectoryEntry) * _children.count());
+    FileListing *listing = (FileListing *)malloc(sizeof(FileListing) + sizeof(HjDirEntry) * _children.count());
 
     listing->count = _children.count();
 
@@ -43,17 +43,17 @@ void FsDirectory::close(FsHandle &handle)
 
 ResultOr<size_t> FsDirectory::read(FsHandle &handle, void *buffer, size_t size)
 {
-    if (size == sizeof(DirectoryEntry))
+    if (size == sizeof(HjDirEntry))
     {
-        size_t index = handle.offset() / sizeof(DirectoryEntry);
+        size_t index = handle.offset() / sizeof(HjDirEntry);
 
         FileListing *listing = (FileListing *)handle.attached;
 
         if (index < listing->count)
         {
-            *((DirectoryEntry *)buffer) = listing->entries[index];
+            *((HjDirEntry *)buffer) = listing->entries[index];
 
-            return sizeof(DirectoryEntry);
+            return sizeof(HjDirEntry);
         }
         else
         {
@@ -84,7 +84,7 @@ RefPtr<FsNode> FsDirectory::find(String name)
     return result;
 }
 
-Result FsDirectory::link(String name, RefPtr<FsNode> child)
+HjResult FsDirectory::link(String name, RefPtr<FsNode> child)
 {
     if (find(name))
     {
@@ -96,7 +96,7 @@ Result FsDirectory::link(String name, RefPtr<FsNode> child)
     return SUCCESS;
 }
 
-Result FsDirectory::unlink(String name)
+HjResult FsDirectory::unlink(String name)
 {
 
     bool has_removed_an_entry = _children.remove_all_match(

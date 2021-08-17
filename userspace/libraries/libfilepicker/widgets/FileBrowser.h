@@ -12,7 +12,7 @@ namespace FilePicker
 struct FileBrowser : public Browser
 {
 public:
-    Callback<void(String &path)> on_element_selected;
+    Func<void(String &path)> on_element_selected;
 
     FileBrowser(RefPtr<Navigation> navigation)
         : Browser(navigation)
@@ -23,7 +23,7 @@ public:
         on(Widget::Event::ACTION, [this](auto) {
             if (selected() >= 0)
             {
-                if (_listing->info(selected()).type == FILE_TYPE_DIRECTORY)
+                if (_listing->info(selected()).type == HJ_FILE_TYPE_DIRECTORY)
                 {
                     _navigation->navigate(_listing->info(selected()).name);
                 }

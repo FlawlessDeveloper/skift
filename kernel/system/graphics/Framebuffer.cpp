@@ -22,7 +22,7 @@ struct Framebuffer : public FsNode
 private:
     /* data */
 public:
-    Framebuffer(/* args */) : FsNode(FILE_TYPE_DEVICE)
+    Framebuffer(/* args */) : FsNode(HJ_FILE_TYPE_DEVICE)
     {
     }
 
@@ -30,7 +30,7 @@ public:
     {
     }
 
-    Result call(FsHandle &handle, IOCall iocall, void *args) override
+    HjResult call(FsHandle &handle, IOCall iocall, void *args) override
     {
         UNUSED(handle);
 

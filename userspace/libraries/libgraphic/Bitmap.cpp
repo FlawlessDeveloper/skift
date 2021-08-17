@@ -1,11 +1,11 @@
 #include <libgraphic/Bitmap.h>
-#include <libgraphic/png/Png.h>
 #include <libgraphic/svg/Svg.h>
 #include <libio/Copy.h>
 #include <libio/File.h>
 #include <libio/MemoryReader.h>
 #include <libio/Path.h>
 #include <libio/Streams.h>
+#include <libpng/Png.h>
 #include <libsystem/system/Memory.h>
 namespace Graphic
 {
@@ -61,7 +61,7 @@ RefPtr<Bitmap> Bitmap::placeholder()
 
 ResultOr<RefPtr<Bitmap>> Bitmap::load_from(String path, int size_hint)
 {
-    IO::File file{path, OPEN_READ};
+    IO::File file{path, HJ_OPEN_READ};
 
     if (!file.exist())
     {
@@ -78,7 +78,7 @@ ResultOr<RefPtr<Bitmap>> Bitmap::load_from(String path, int size_hint)
         return Svg::render(file, size_hint);
     }
     IO::logln("Unknown bitmap extension: {}", p.extension());
-    return Result::ERR_NOT_IMPLEMENTED;
+    return ERR_NOT_IMPLEMENTED;
 }
 
 RefPtr<Bitmap> Bitmap::load_from_or_placeholder(String path, int size_hint)
@@ -93,10 +93,10 @@ RefPtr<Bitmap> Bitmap::load_from_or_placeholder(String path, int size_hint)
     return result.unwrap();
 }
 
-Result Bitmap::save_to(String path)
+HjResult Bitmap::save_to(String path)
 {
     UNUSED(path);
-    return Result::ERR_NOT_IMPLEMENTED;
+    return ERR_NOT_IMPLEMENTED;
 }
 
 Bitmap::~Bitmap()

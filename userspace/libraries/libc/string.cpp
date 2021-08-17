@@ -62,19 +62,41 @@ void *memmove(void *dest, const void *src, size_t n)
     return dest;
 }
 
+#if defined(__x86_64__) || defined(__x86_32__)
+static inline void __movsb_copy(void *from, const void *to, size_t size) {
+  asm volatile ("rep movsb"
+                : "=D" (from),
+                  "=S" (to),
+                  "=c" (size)
+                : "D" (from),
+                  "S" (to),
+                  "c" (size)
+                : "memory");
+
+}
+
+#endif
+
+
 void *memcpy(void *s1, const void *s2, size_t n)
 {
-    unsigned int *ldest = (unsigned int *)s1;
-    unsigned int *lsrc = (unsigned int *)s2;
+#if defined(__x86_64__) || defined(__x86_32__)
+    __movsb_copy(s1, s2, n);
+    return s1;
+#else
+    using MemcpyBlock = intptr_t;
 
-    while (n >= sizeof(unsigned int))
+    MemcpyBlock *ldest = (MemcpyBlock *)s1;
+    const MemcpyBlock *lsrc = (const MemcpyBlock *)s2;
+
+    while (n >= sizeof(MemcpyBlock))
     {
         *ldest++ = *lsrc++;
-        n -= sizeof(unsigned int);
+        n -= sizeof(MemcpyBlock);
     }
 
     char *cdest = (char *)ldest;
-    char *csrc = (char *)lsrc;
+    const char *csrc = (const char *)lsrc;
 
     while (n > 0)
     {
@@ -83,6 +105,7 @@ void *memcpy(void *s1, const void *s2, size_t n)
     }
 
     return s1;
+#endif
 }
 
 void *memset(void *str, int c, size_t n)

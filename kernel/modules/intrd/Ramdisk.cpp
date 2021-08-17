@@ -1,10 +1,9 @@
 
-#include "system/Streams.h"
+#include <abi/Result.h>
 #include <libfile/TARArchive.h>
-#include <libsystem/Result.h>
 
 #include "archs/Arch.h"
-
+#include "system/Streams.h"
 #include "system/memory/Memory.h"
 #include "system/modules/Modules.h"
 #include "system/scheduling/Scheduler.h"
@@ -18,7 +17,7 @@ void ramdisk_load(Module *module)
 
         if (block.name[strlen(block.name) - 1] == '/')
         {
-            Result result = scheduler_running()->domain().mkdir(file_path);
+            HjResult result = scheduler_running()->domain().mkdir(file_path);
 
             if (result != SUCCESS)
             {
@@ -27,7 +26,7 @@ void ramdisk_load(Module *module)
         }
         else if ((block.typeflag & 8) == 0 || (block.typeflag & 8) == 5)
         {
-            auto result_or_handle = scheduler_running()->domain().open(file_path, OPEN_WRITE | OPEN_CREATE);
+            auto result_or_handle = scheduler_running()->domain().open(file_path, HJ_OPEN_WRITE | HJ_OPEN_CREATE);
 
             if (!result_or_handle.success())
             {

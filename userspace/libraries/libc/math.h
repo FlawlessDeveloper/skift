@@ -2,13 +2,13 @@
 
 #include <__libc__.h>
 
-#include <libc/bits/abs.h>
-#include <libc/bits/float.h>
-#include <libc/bits/pi.h>
+#include <bits/abs.h>
+#include <bits/float.h>
+#include <bits/pi.h>
 
 __BEGIN_HEADER
 
-#if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE) || defined(_SKIFT_SOURCE)
+#if defined(_XHJ_OPEN_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE) || defined(_SKIFT_SOURCE)
 #    define M_E 2.7182818284590452354       /* e */
 #    define M_LOG2E 1.4426950408889634074   /* log_2 e */
 #    define M_LOG10E 0.43429448190325182765 /* log_10 e */

@@ -1,10 +1,10 @@
 
-#include <libsystem/Result.h>
+#include <abi/Result.h>
 
 #include "system/node/Handle.h"
 #include "system/node/Pipe.h"
 
-FsPipe::FsPipe() : FsNode(FILE_TYPE_PIPE)
+FsPipe::FsPipe() : FsNode(HJ_FILE_TYPE_PIPE)
 {
 }
 

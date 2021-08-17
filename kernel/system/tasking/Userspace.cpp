@@ -16,7 +16,7 @@ void userspace_initialize()
     Launchpad *init_lauchpad = launchpad_create("init", "/System/Utilities/init");
     launchpad_flags(init_lauchpad, TASK_WAITABLE | TASK_USER);
 
-    Stream *serial_device = stream_open("/Devices/serial", OPEN_WRITE | OPEN_READ);
+    Stream *serial_device = stream_open("/Devices/serial", HJ_OPEN_WRITE | HJ_OPEN_READ);
 
     launchpad_handle(init_lauchpad, HANDLE(serial_device), 0);
     launchpad_handle(init_lauchpad, HANDLE(serial_device), 1);
@@ -28,7 +28,7 @@ void userspace_initialize()
     early_console_disable(); // We disable the early console to prevent artifact.
 
     int init_process = -1;
-    Result result = launchpad_launch(init_lauchpad, &init_process);
+    HjResult result = launchpad_launch(init_lauchpad, &init_process);
 
     stream_close(serial_device);
 

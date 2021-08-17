@@ -1,13 +1,13 @@
 #include <libio/File.h>
+#include <libio/Path.h>
 #include <libio/Streams.h>
 #include <libjson/Json.h>
 #include <libsystem/process/Launchpad.h>
-#include <libio/Path.h>
 
 #define FILE_EXTENSIONS_DATABASE_PATH "/Configs/open/file-extensions.json"
 #define FILE_TYPES_DATABASE_PATH "/Configs/open/file-types.json"
 
-Result open(const char *raw_path)
+HjResult open(const char *raw_path)
 {
     auto path = IO::Path::parse(raw_path);
 
@@ -18,7 +18,7 @@ Result open(const char *raw_path)
         return ERR_EXTENSION;
     }
 
-    IO::File database{FILE_EXTENSIONS_DATABASE_PATH, OPEN_READ};
+    IO::File database{FILE_EXTENSIONS_DATABASE_PATH, HJ_OPEN_READ};
     auto file_extensions = Json::parse(database);
 
     if (!file_extensions.is(Json::OBJECT))
@@ -34,7 +34,7 @@ Result open(const char *raw_path)
         return ERR_EXTENSION;
     }
 
-    IO::File type_database{FILE_TYPES_DATABASE_PATH, OPEN_READ};
+    IO::File type_database{FILE_TYPES_DATABASE_PATH, HJ_OPEN_READ};
     auto file_types = Json::parse(type_database);
 
     if (!file_types.is(Json::OBJECT))
@@ -74,7 +74,7 @@ int main(int argc, char const *argv[])
         return PROCESS_FAILURE;
     }
 
-    Result result = open(argv[1]);
+    HjResult result = open(argv[1]);
     if (result != SUCCESS)
     {
         IO::errln("{}: {}: {}", argv[0], argv[1], get_result_description(result));

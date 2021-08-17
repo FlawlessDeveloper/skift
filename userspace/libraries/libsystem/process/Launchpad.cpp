@@ -3,10 +3,10 @@
 #include <skift/Environment.h>
 #include <string.h>
 
+#include <libio/Path.h>
 #include <libsystem/core/Plugs.h>
 #include <libsystem/process/Launchpad.h>
 #include <libsystem/process/Process.h>
-#include <libio/Path.h>
 
 Launchpad *launchpad_create(const char *name, const char *executable)
 {
@@ -116,7 +116,7 @@ void launchpad_environment(Launchpad *launchpad, const char *buffer)
     launchpad->env_size = strlen(buffer);
 }
 
-Result launchpad_launch(Launchpad *launchpad, int *pid)
+HjResult launchpad_launch(Launchpad *launchpad, int *pid)
 {
     int discard;
 
@@ -127,7 +127,7 @@ Result launchpad_launch(Launchpad *launchpad, int *pid)
 
     strcpy(launchpad->executable, process_resolve(launchpad->executable).cstring());
 
-    Result result = __plug_process_launch(launchpad, pid);
+    HjResult result = __plug_process_launch(launchpad, pid);
 
     launchpad_destroy(launchpad);
 

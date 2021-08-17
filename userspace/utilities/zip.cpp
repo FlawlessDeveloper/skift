@@ -40,7 +40,7 @@ int main(int argc, char const *argv[])
     {
         IO::outln("{}: Entry: {} is being inserted...", argv[0], args.argv()[i]);
 
-        IO::File src_file(args.argv()[i], OPEN_READ);
+        IO::File src_file(args.argv()[i], HJ_OPEN_READ);
         if (!src_file.exist())
         {
             IO::errln("{}: File '{}' does not exist", argv[0], args.argv()[i]);
@@ -49,7 +49,7 @@ int main(int argc, char const *argv[])
 
         auto result = archive->insert(args.argv()[i].cstring(), src_file);
 
-        if (result != Result::SUCCESS)
+        if (result != HjResult::SUCCESS)
         {
             IO::errln("{}: Failed to insert entry '{}' with error '{}'", argv[0], args.argv()[i], get_result_description(result));
             return PROCESS_FAILURE;

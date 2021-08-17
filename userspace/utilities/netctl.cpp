@@ -1,15 +1,14 @@
 #include <abi/Paths.h>
-#include <string.h>
-
 #include <libio/File.h>
 #include <libio/Streams.h>
+#include <string.h>
 
 int main(int argc, char **argv)
 {
     UNUSED(argc);
     UNUSED(argv);
 
-    IO::File network_device{NETWORK_DEVICE_PATH, OPEN_READ | OPEN_WRITE};
+    IO::File network_device{NETWORK_DEVICE_PATH, HJ_OPEN_READ | HJ_OPEN_WRITE};
 
     if (argc == 2 && strcmp(argv[1], "-i") == 0)
     {

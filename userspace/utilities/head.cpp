@@ -9,7 +9,7 @@ static char option_delimiter = '\n';
 static bool option_verbose = false;
 static bool option_quiet = false;
 
-Result head(String name, IO::Reader &input, bool many)
+HjResult head(String name, IO::Reader &input, bool many)
 {
     if ((!many && option_verbose) && !option_quiet)
     {
@@ -28,7 +28,7 @@ Result head(String name, IO::Reader &input, bool many)
 
 int wrap_head(String name, IO::Reader &input, bool many)
 {
-    Result result = head(name, input, many);
+    HjResult result = head(name, input, many);
 
     if (result != SUCCESS)
     {
@@ -109,7 +109,7 @@ int main(int argc, const char *argv[])
 
     for (auto filename : args.argv())
     {
-        IO::File file{filename, OPEN_READ};
+        IO::File file{filename, HJ_OPEN_READ};
 
         if (wrap_head(filename, file, true) != PROCESS_SUCCESS)
         {

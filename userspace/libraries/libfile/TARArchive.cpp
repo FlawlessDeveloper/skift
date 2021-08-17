@@ -85,7 +85,7 @@ TARArchive::TARArchive(IO::Path path, bool read) : Archive(path)
     }
 }
 
-Result TARArchive::extract(unsigned int entry_index, IO::Writer &writer)
+HjResult TARArchive::extract(unsigned int entry_index, IO::Writer &writer)
 {
     UNUSED(entry_index);
     UNUSED(writer);
@@ -93,7 +93,7 @@ Result TARArchive::extract(unsigned int entry_index, IO::Writer &writer)
     return ERR_NOT_IMPLEMENTED;
 }
 
-Result TARArchive::insert(const char *entry_name, IO::Reader &reader)
+HjResult TARArchive::insert(const char *entry_name, IO::Reader &reader)
 {
     UNUSED(entry_name);
     UNUSED(reader);
@@ -101,11 +101,11 @@ Result TARArchive::insert(const char *entry_name, IO::Reader &reader)
     return ERR_NOT_IMPLEMENTED;
 }
 
-Result TARArchive::read_archive()
+HjResult TARArchive::read_archive()
 {
     _valid = false;
 
-    IO::File archive_file{_path, OPEN_READ};
+    IO::File archive_file{_path, HJ_OPEN_READ};
 
     // Archive does not exist
     if (!archive_file.exist())
